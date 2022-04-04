@@ -20,8 +20,11 @@ public:
 
 protected:
 	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> ProjectileClass;
+
 	UPROPERTY(VisibleAnywhere)
-	USpringArmComponent *SpringArmCompoment;
+	USpringArmComponent *SpringArmComponent;
 
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent *CameraComponent;
@@ -32,6 +35,7 @@ protected:
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 
+	void PrimaryAttack();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
