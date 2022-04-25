@@ -6,6 +6,7 @@
 #include <GameFramework/SpringArmComponent.h>
 #include <GameFramework/CharacterMovementComponent.h>
 #include "SInteractionComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 // Sets default values
@@ -89,9 +90,24 @@ void ASCharacter::PrimaryAttack()
 
 void ASCharacter::PrimaryAttack_TimerElapsed()
 {
+	FHitResult Hit;
+	FCollisionQueryParams QuerryParams;	
+	
+	FVector From = CameraComponent->GetComponentLocation();
+	FVector DesireTarget = From + (CameraComponent->GetForwardVector() * 1000);
+
+	bool bBlockingHit = GetWorld()->LineTraceSingleByProfile(Hit, From, DesireTarget, TEXT("Projectile"), QuerryParams);
+	 
+	
+	if( bBlockingHit )
+	{
+		DesireTarget = Hit.ImpactPoint;
+	}
+
 	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 
-	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
+	FRotator LookAt = UKismetMathLibrary::FindLookAtRotation(HandLocation, DesireTarget);
+	FTransform SpawnTM = FTransform(LookAt, HandLocation);
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
