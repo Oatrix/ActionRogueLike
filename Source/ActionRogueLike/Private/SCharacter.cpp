@@ -85,11 +85,11 @@ void ASCharacter::MoveRight(float Value)
 void ASCharacter::SecondaryAttack()
 {
 	PlayAnimMontage(AttackAnim);
-	GetWorldTimerManager().SetTimer(TimerHandle_BlackHoleAttack, this, &ASCharacter::BlackHoleAttack_TimerElapsed, 0.2f);
+	GetWorldTimerManager().SetTimer(TimerHandle_SecondaryAttack, this, &ASCharacter::SecondaryAttack_TimerElapsed, 0.2f);
 }
 
 
-void ASCharacter::BlackHoleAttack_TimerElapsed()
+void ASCharacter::SecondaryAttack_TimerElapsed()
 {
 	FHitResult Hit;
 	FCollisionQueryParams QuerryParams;
@@ -114,7 +114,7 @@ void ASCharacter::BlackHoleAttack_TimerElapsed()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParams.Instigator = this;
 
-	GetWorld()->SpawnActor<AActor>(BlackHoleProjectileClass, SpawnTM, SpawnParams);
+	GetWorld()->SpawnActor<AActor>(SecondaryProjectileClass, SpawnTM, SpawnParams);
 }
 
 
@@ -150,7 +150,7 @@ void ASCharacter::PrimaryAttack_TimerElapsed()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParams.Instigator = this;
 
-	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+	GetWorld()->SpawnActor<AActor>(PrimaryProjectileClass, SpawnTM, SpawnParams);
 }
 
 void ASCharacter::PrimaryInteract()
