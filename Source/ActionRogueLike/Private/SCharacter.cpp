@@ -41,6 +41,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ASCharacter::PrimaryAttack);
+	PlayerInputComponent->BindAction("BlackHoleAttack", IE_Pressed, this, &ASCharacter::BlackHoleAttack);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
@@ -80,6 +81,42 @@ void ASCharacter::MoveRight(float Value)
 
 	AddMovementInput(RightVector, Value);
 }
+
+void ASCharacter::BlackHoleAttack()
+{
+	PlayAnimMontage(AttackAnim);
+	GetWorldTimerManager().SetTimer(TimerHandle_BlackHoleAttack, this, &ASCharacter::BlackHoleAttack_TimerElapsed, 0.2f);
+}
+
+
+void ASCharacter::BlackHoleAttack_TimerElapsed()
+{
+	FHitResult Hit;
+	FCollisionQueryParams QuerryParams;
+
+	FVector From = CameraComponent->GetComponentLocation();
+	FVector DesireTarget = From + (CameraComponent->GetForwardVector() * 1000);
+
+	bool bBlockingHit = GetWorld()->LineTraceSingleByProfile(Hit, From, DesireTarget, TEXT("Projectile"), QuerryParams);
+
+
+	if (bBlockingHit)
+	{
+		DesireTarget = Hit.ImpactPoint;
+	}
+
+	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+
+	FRotator LookAt = UKismetMathLibrary::FindLookAtRotation(HandLocation, DesireTarget);
+	FTransform SpawnTM = FTransform(LookAt, HandLocation);
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	SpawnParams.Instigator = this;
+
+	GetWorld()->SpawnActor<AActor>(BlackHoleProjectileClass, SpawnTM, SpawnParams);
+}
+
 
 void ASCharacter::PrimaryAttack()
 {

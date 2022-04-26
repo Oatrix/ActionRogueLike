@@ -22,11 +22,16 @@ protected:
 	TSubclassOf<AActor> ProjectileClass;
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
+	TSubclassOf<AActor> BlackHoleProjectileClass;
+
+	UPROPERTY(EditAnywhere, Category = "Attack")
 	UAnimMontage *AttackAnim;
 
 	FTimerHandle TimerHandle_PrimaryAttack;
+	FTimerHandle TimerHandle_BlackHoleAttack;
 
 	void PrimaryAttack_TimerElapsed();
+	void BlackHoleAttack_TimerElapsed();
 
 public:
 	// Sets default values for this character's properties
@@ -50,6 +55,7 @@ protected:
 	void MoveRight(float Value);
 
 	void PrimaryAttack();
+	void BlackHoleAttack();
 	void PrimaryInteract();
 
 public:	
