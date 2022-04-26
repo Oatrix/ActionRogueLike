@@ -55,7 +55,7 @@ protected:
 	void MoveRight(float Value);
 
 	void PrimaryAttack();
-	void BlackHoleAttack();
+	void SecondaryAttack();
 	void PrimaryInteract();
 
 public:	
