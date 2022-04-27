@@ -15,6 +15,8 @@ ASCharacter::ASCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	AimingDistance = 1000.0f;
+
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>( "SpringArmComponent" );
 	SpringArmComponent->bUsePawnControlRotation = true;
 	SpringArmComponent->SetupAttachment(RootComponent);
@@ -95,7 +97,7 @@ void ASCharacter::SecondaryAttack_TimerElapsed()
 	FCollisionQueryParams QuerryParams;
 
 	FVector From = CameraComponent->GetComponentLocation();
-	FVector DesireTarget = From + (CameraComponent->GetForwardVector() * 1000);
+	FVector DesireTarget = From + (CameraComponent->GetForwardVector() * AimingDistance);
 
 	bool bBlockingHit = GetWorld()->LineTraceSingleByProfile(Hit, From, DesireTarget, TEXT("Projectile"), QuerryParams);
 
@@ -131,7 +133,7 @@ void ASCharacter::PrimaryAttack_TimerElapsed()
 	FCollisionQueryParams QuerryParams;	
 	
 	FVector From = CameraComponent->GetComponentLocation();
-	FVector DesireTarget = From + (CameraComponent->GetForwardVector() * 1000);
+	FVector DesireTarget = From + (CameraComponent->GetForwardVector() * AimingDistance);
 
 	bool bBlockingHit = GetWorld()->LineTraceSingleByProfile(Hit, From, DesireTarget, TEXT("Projectile"), QuerryParams);
 	 

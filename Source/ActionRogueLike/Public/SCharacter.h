@@ -27,6 +27,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	UAnimMontage *AttackAnim;
 
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	float AimingDistance;
+
 	FTimerHandle TimerHandle_PrimaryAttack;
 	FTimerHandle TimerHandle_SecondaryAttack;
 
