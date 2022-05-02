@@ -6,13 +6,26 @@
 // Sets default values for this component's properties
 USAttributeComponent::USAttributeComponent()
 {
-
-	Health = 100;
+	MaxHealth = 100;
+	Health = MaxHealth;
 }
 
 bool USAttributeComponent::ApplyHealthChange(float Delta)
 {
-	Health += Delta;
+	float NewHealth = Health + Delta;
+
+	if(NewHealth < 0)
+	{
+		Delta -= NewHealth;
+		NewHealth = 0;
+	}
+	else if(NewHealth > MaxHealth)
+	{
+		Delta = MaxHealth - Health;
+		NewHealth = MaxHealth;
+	}
+	
+	Health = NewHealth;
 
 	OnHealthChanged.Broadcast(nullptr, this, Health, Delta);
 

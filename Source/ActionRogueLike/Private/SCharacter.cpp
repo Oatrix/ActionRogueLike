@@ -8,6 +8,7 @@
 #include "SInteractionComponent.h"
 #include "SAttributeComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Components/CapsuleComponent.h"
 
 
 // Sets default values
@@ -154,7 +155,8 @@ void ASCharacter::PrimaryAttack_TimerElapsed()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParams.Instigator = this;
 
-	GetWorld()->SpawnActor<AActor>(PrimaryProjectileClass, SpawnTM, SpawnParams);
+	AActor *NewProjectile =  GetWorld()->SpawnActor<AActor>(PrimaryProjectileClass, SpawnTM, SpawnParams);
+	GetCapsuleComponent()->IgnoreActorWhenMoving(NewProjectile, true);
 }
 
 void ASCharacter::PrimaryInteract()
