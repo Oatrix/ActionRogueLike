@@ -20,56 +20,61 @@ class ACTIONROGUELIKE_API ASCharacter : public ACharacter
 protected:
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
-	TSubclassOf<AActor> PrimaryProjectileClass;
+	TSubclassOf<AActor> ProjectileClass;
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
-	TSubclassOf<AActor> SecondaryProjectileClass;
+	TSubclassOf<AActor> BlackHoleProjectileClass;
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
-	UAnimMontage *AttackAnim;
+	TSubclassOf<AActor> DashProjectileClass;
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
-	float AimingDistance;
+	UAnimMontage* AttackAnim;
 
 	FTimerHandle TimerHandle_PrimaryAttack;
-	FTimerHandle TimerHandle_SecondaryAttack;
+	FTimerHandle TimerHandle_BlackholeAttack;
+	FTimerHandle TimerHandle_Dash;
 
-	void PrimaryAttack_TimerElapsed();
-	void SecondaryAttack_TimerElapsed();
-
-public:
-	// Sets default values for this character's properties
-	ASCharacter();
-
-protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Attack")
+	float AttackAnimDelay;
 
 	UPROPERTY(VisibleAnywhere)
-	USpringArmComponent *SpringArmComponent;
+	USpringArmComponent* SpringArmComp;
 
 	UPROPERTY(VisibleAnywhere)
-	UCameraComponent *CameraComponent;
+	UCameraComponent* CameraComp;
 
 	UPROPERTY(VisibleAnywhere)
-	USInteractionComponent *InteractionComponent;
-	
+	USInteractionComponent* InteractionComp;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	USAttributeComponent *AttributeComponent;
-
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	USAttributeComponent* AttributeComp;
 
 	void MoveForward(float Value);
+
 	void MoveRight(float Value);
 
 	void PrimaryAttack();
-	void SecondaryAttack();
+
+	void PrimaryAttack_TimeElapsed();
+
+	void BlackHoleAttack();
+
+	void BlackholeAttack_TimeElapsed();
+
+	void Dash();
+
+	void Dash_TimeElapsed();
+
+	// Re-use spawn logic between attacks
+	void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
+
 	void PrimaryInteract();
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
+	ASCharacter();
+
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };

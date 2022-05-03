@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+
 #include "SInteractionComponent.h"
-#include "SGamePlayInterface.h"	
-#include <DrawDebugHelpers.h>
+#include "SGameplayInterface.h"
+#include "DrawDebugHelpers.h"
 
 // Sets default values for this component's properties
 USInteractionComponent::USInteractionComponent()
@@ -33,12 +34,14 @@ void USInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	// ...
 }
 
+
 void USInteractionComponent::PrimaryInteract()
 {
-	FCollisionObjectQueryParams ObjectQuerryParams;
-	ObjectQuerryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+	FCollisionObjectQueryParams ObjectQueryParams;
+	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
 
 	AActor* MyOwner = GetOwner();
+
 
 	FVector EyeLocation;
 	FRotator EyeRotation;
@@ -47,32 +50,37 @@ void USInteractionComponent::PrimaryInteract()
 	FVector End = EyeLocation + (EyeRotation.Vector() * 1000);
 
 	//FHitResult Hit;
-	//bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQuerryParams);
+	//bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQueryParams);
 
-	float Radius = 30.0f;
 	TArray<FHitResult> Hits;
+
+	float Radius = 30.f;
+
 	FCollisionShape Shape;
 	Shape.SetSphere(Radius);
 
-	bool bBlockingHit = GetWorld()->SweepMultiByObjectType(Hits, EyeLocation, End, FQuat::Identity, ObjectQuerryParams, Shape);
+	bool bBlockingHit = GetWorld()->SweepMultiByObjectType(Hits, EyeLocation, End, FQuat::Identity, ObjectQueryParams, Shape);
+
 	FColor LineColor = bBlockingHit ? FColor::Green : FColor::Red;
 
-	for(FHitResult Hit : Hits)
+	for (FHitResult Hit : Hits)
 	{
-		if (AActor* HitActor = Hit.GetActor())
+		AActor* HitActor = Hit.GetActor();
+		if (HitActor)
 		{
-			if (HitActor->Implements<USGamePlayInterface>())
+			if (HitActor->Implements<USGameplayInterface>())
 			{
-				DrawDebugSphere(GetWorld(), Hit.ImpactPoint, Radius, 32, LineColor, false, 2.0f);
-
 				APawn* MyPawn = Cast<APawn>(MyOwner);
 
-				ISGamePlayInterface::Execute_Interact(HitActor, MyPawn);
+				ISGameplayInterface::Execute_Interact(HitActor, MyPawn);
 				break;
 			}
 		}
+
+		DrawDebugSphere(GetWorld(), Hit.ImpactPoint, Radius, 32, LineColor, false, 2.0f);
 	}
 
 	DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0, 2.0f);
 
 }
+

@@ -1,16 +1,16 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "ActionRogueLikeGameModeBase.generated.h"
+#include "ActionRoguelikeGameModeBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class ACTIONROGUELIKE_API AActionRogueLikeGameModeBase : public AGameModeBase
+class ACTIONROGUELIKE_API AActionRoguelikeGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	

@@ -21,14 +21,13 @@ bool USAttributeComponent::ApplyHealthChange(float Delta)
 	}
 	else if(NewHealth > MaxHealth)
 	{
-		Delta = MaxHealth - Health;
+		Delta -= NewHealth - MaxHealth;
 		NewHealth = MaxHealth;
 	}
-	
+		
 	Health = NewHealth;
 
 	OnHealthChanged.Broadcast(nullptr, this, Health, Delta);
 
 	return true;
 }
-

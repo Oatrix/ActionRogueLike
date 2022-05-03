@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "SGamePlayInterface.generated.h"
+#include "SGameplayInterface.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
-class USGamePlayInterface : public UInterface
+class USGameplayInterface : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -16,7 +16,7 @@ class USGamePlayInterface : public UInterface
 /**
  * 
  */
-class ACTIONROGUELIKE_API ISGamePlayInterface
+class ACTIONROGUELIKE_API ISGameplayInterface
 {
 	GENERATED_BODY()
 
@@ -24,5 +24,5 @@ class ACTIONROGUELIKE_API ISGamePlayInterface
 public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Interact(APawn *InstigatorPawn);
+	void Interact(APawn* InstigatorPawn);
 };

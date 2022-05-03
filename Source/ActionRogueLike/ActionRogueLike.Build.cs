@@ -1,10 +1,10 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 using UnrealBuildTool;
 
-public class ActionRogueLike : ModuleRules
+public class ActionRoguelike : ModuleRules
 {
-	public ActionRogueLike(ReadOnlyTargetRules Target) : base(Target)
+	public ActionRoguelike(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	

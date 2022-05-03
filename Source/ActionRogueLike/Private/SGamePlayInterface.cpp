@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "SGamePlayInterface.h"
+#include "SGameplayInterface.h"
 
-// Add default functionality here for any ISGamePlayInterface functions that are not pure virtual.
+// Add default functionality here for any ISGameplayInterface functions that are not pure virtual.
