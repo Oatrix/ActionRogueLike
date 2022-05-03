@@ -9,6 +9,7 @@
 class USphereComponent;
 class UProjectileMovementComponent;
 class UParticleSystemComponent;
+class UAudioComponent;
 
 UCLASS(ABSTRACT) // 'ABSTRACT' marks this class as incomplete, keeping this out of certain dropdowns windows like SpawnActor in Unreal Editor
 class ACTIONROGUELIKE_API ASProjectileBase : public AActor
@@ -16,6 +17,12 @@ class ACTIONROGUELIKE_API ASProjectileBase : public AActor
 	GENERATED_BODY()
 
 protected:
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	UAudioComponent* FlightSound;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	UAudioComponent* ImpactSound;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	UParticleSystem* ImpactVFX;
