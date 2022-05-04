@@ -15,6 +15,11 @@ bool USAttributeComponent::IsAlive() const
 	return Health > 0.0f;
 }
 
+float USAttributeComponent::GetHealthRatio() const
+{
+	return Health / MaxHealth;
+}
+
 bool USAttributeComponent::ApplyHealthChange(float Delta)
 {
 	float NewHealth = Health + Delta;

@@ -38,6 +38,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Attack")
 	float AttackAnimDelay;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	UParticleSystem* HandMagicCastingFx;
+
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
 

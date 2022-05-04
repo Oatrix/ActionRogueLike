@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "SInteractionComponent.h"
 #include "SAttributeComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ASCharacter::ASCharacter()
@@ -91,7 +92,7 @@ void ASCharacter::MoveRight(float Value)
 void ASCharacter::PrimaryAttack()
 {
 	PlayAnimMontage(AttackAnim);
-
+	UGameplayStatics::SpawnEmitterAttached(HandMagicCastingFx, GetMesh(), "Muzzle_01", FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget);
 	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &ASCharacter::PrimaryAttack_TimeElapsed, AttackAnimDelay);
 }
 
@@ -105,7 +106,7 @@ void ASCharacter::PrimaryAttack_TimeElapsed()
 void ASCharacter::BlackHoleAttack()
 {
 	PlayAnimMontage(AttackAnim);
-
+	UGameplayStatics::SpawnEmitterAttached(HandMagicCastingFx, GetMesh(), "Muzzle_01", FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget);
 	GetWorldTimerManager().SetTimer(TimerHandle_BlackholeAttack, this, &ASCharacter::BlackholeAttack_TimeElapsed, AttackAnimDelay);
 }
 
@@ -119,7 +120,7 @@ void ASCharacter::BlackholeAttack_TimeElapsed()
 void ASCharacter::Dash()
 {
 	PlayAnimMontage(AttackAnim);
-
+	UGameplayStatics::SpawnEmitterAttached(HandMagicCastingFx, GetMesh(), "Muzzle_01", FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget);
 	GetWorldTimerManager().SetTimer(TimerHandle_Dash, this, &ASCharacter::Dash_TimeElapsed, AttackAnimDelay);
 }
 
@@ -134,7 +135,10 @@ void ASCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 {
 	if (ensureAlways(ClassToSpawn))
 	{
-		FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+		FVector HandLocation;
+		FRotator HandRotation;
+		GetMesh()->GetSocketWorldLocationAndRotation("Muzzle_01", HandLocation, HandRotation);
+		const USkeletalMeshSocket *Socket = GetMesh()->GetSocketByName("Muzzle_01");
 
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -169,7 +173,7 @@ void ASCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 		FRotator ProjRotation = FRotationMatrix::MakeFromX(TraceEnd - HandLocation).Rotator();
 
 		FTransform SpawnTM = FTransform(ProjRotation, HandLocation);
-		GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTM, SpawnParams);
+		GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTM, SpawnParams);		
 	}
 }
 
@@ -184,9 +188,13 @@ void ASCharacter::PrimaryInteract()
 
 void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta)
 {
-	if(NewHealth <= 0.0f && Delta < 0.0f)
+	if( Delta < 0.0f)
 	{
-		APlayerController *PC = Cast<APlayerController>(GetController());
-		DisableInput(PC);
+		GetMesh()->SetScalarParameterValueOnMaterials("TimeToHit", GetWorld()->TimeSeconds);
+		if(NewHealth <= 0.0f)
+		{
+			APlayerController *PC = Cast<APlayerController>(GetController());
+			DisableInput(PC);
+		}
 	}
 }
