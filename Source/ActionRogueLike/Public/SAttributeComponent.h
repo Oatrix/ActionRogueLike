@@ -32,10 +32,6 @@ protected:
 	// --
 	// Category = "" - display only for detail panels and blueprint context menu.
 
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
-	float MaxHealth;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
 	float Health;
 
@@ -52,6 +48,4 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool ApplyHealthChange(float Delta);
 
-	UFUNCTION(BlueprintCallable)
-	float GetHealthRatio() const;
 };

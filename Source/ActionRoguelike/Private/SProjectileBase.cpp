@@ -6,7 +6,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Components/AudioComponent.h"
+
 
 ASProjectileBase::ASProjectileBase()
 {
@@ -24,13 +24,6 @@ ASProjectileBase::ASProjectileBase()
 	MoveComp->ProjectileGravityScale = 0.0f;
 	MoveComp->InitialSpeed = 8000;
 
-	FlightSound = CreateDefaultSubobject<UAudioComponent>("FlightSound");
-	FlightSound->SetupAttachment(RootComponent);
-	FlightSound->SetAutoActivate(true);
-
-	ImpactSound = CreateDefaultSubobject<UAudioComponent>("ImpactSound");
-	ImpactSound->SetupAttachment(RootComponent);
-	ImpactSound->SetAutoActivate(false);
 }
 
 
@@ -48,7 +41,7 @@ void ASProjectileBase::Explode_Implementation()
 	if (ensure(!IsPendingKill()))
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation());
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ImpactSound->Sound, GetActorLocation());
+
 		Destroy();
 	}
 }
@@ -56,5 +49,5 @@ void ASProjectileBase::Explode_Implementation()
 void ASProjectileBase::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	//SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);	
+	//SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
 }

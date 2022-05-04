@@ -38,9 +38,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Attack")
 	float AttackAnimDelay;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Effects")
-	UParticleSystem* HandMagicCastingFx;
-
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
 
@@ -77,7 +74,7 @@ protected:
 	UFUNCTION()
 	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
 
-	virtual void PostInitializeComponents();
+	virtual void PostInitializeComponents() override;
 
 public:	
 

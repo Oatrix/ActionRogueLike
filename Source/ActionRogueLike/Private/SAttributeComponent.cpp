@@ -6,36 +6,19 @@
 // Sets default values for this component's properties
 USAttributeComponent::USAttributeComponent()
 {
-	MaxHealth = 100;
-	Health = MaxHealth;
+	Health = 100;
 }
+
 
 bool USAttributeComponent::IsAlive() const
 {
 	return Health > 0.0f;
 }
 
-float USAttributeComponent::GetHealthRatio() const
-{
-	return Health / MaxHealth;
-}
 
 bool USAttributeComponent::ApplyHealthChange(float Delta)
 {
-	float NewHealth = Health + Delta;
-
-	if(NewHealth < 0)
-	{
-		Delta -= NewHealth;
-		NewHealth = 0;
-	}
-	else if(NewHealth > MaxHealth)
-	{
-		Delta -= NewHealth - MaxHealth;
-		NewHealth = MaxHealth;
-	}
-		
-	Health = NewHealth;
+	Health += Delta;
 
 	OnHealthChanged.Broadcast(nullptr, this, Health, Delta);
 
