@@ -11,7 +11,7 @@ class UProjectileMovementComponent;
 class UParticleSystemComponent;
 class UAudioComponent;
 class USoundCue;
-//class UCameraShake;
+class UMatineeCameraShake;
 
 
 UCLASS(ABSTRACT) // 'ABSTRACT' marks this class as incomplete, keeping this out of certain dropdowns windows like SpawnActor in Unreal Editor
