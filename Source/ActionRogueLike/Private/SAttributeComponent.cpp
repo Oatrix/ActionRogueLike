@@ -2,7 +2,6 @@
 
 
 #include "SAttributeComponent.h"
-#include "SCharacter.h"
 #include "SGameModeBase.h"
 
 
@@ -52,7 +51,7 @@ bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delt
 		return false;
 	}
 
-	if (Delta < 0.0f && Cast<ASCharacter>(InstigatorActor))
+	if (Delta < 0.0f)
 	{
 		float DamageMultiplier = CVarDamageMultiplier.GetValueOnGameThread();
 
